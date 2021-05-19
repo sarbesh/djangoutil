@@ -82,7 +82,7 @@ Detailed instructions on how to install, configure, and get the project running.
 
 ## Known issues
 
-[comment]: <> (Document any known significant shortcomings with the software.)
+    1. Able to Authenticate, but resoources not accessible  
 
 ## Getting help
 

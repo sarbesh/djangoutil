@@ -2,10 +2,10 @@ All notable changes to this project will be documented in this file.
 We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 
-## x.y.z - YYYY-MM-DD
+## 1.0.0 - 2021-05-19
 
 ### Added
-- Lorem ipsum dolor sit amet
+- Project Created
 
 ### Deprecated
 - Nothing.
@@ -15,3 +15,21 @@ We follow the [Semantic Versioning 2.0.0](http://semver.org/) format.
 
 ### Fixed
 - Nothing.
+
+[comment]: <> (## x.y.z - YYYY-MM-DD)
+
+[comment]: <> (### Added)
+
+[comment]: <> (- Lorem ipsum dolor sit amet)
+
+[comment]: <> (### Deprecated)
+
+[comment]: <> (- Nothing.)
+
+[comment]: <> (### Removed)
+
+[comment]: <> (- Nothing.)
+
+[comment]: <> (### Fixed)
+
+[comment]: <> (- Nothing.)

@@ -82,7 +82,7 @@ Detailed instructions on how to install, configure, and get the project running.
 
 ## Known issues
 
-    1. Able to Authenticate, but resoources not accessible  
+    1. AuthToken has no Expiry time.
 
 ## Getting help
 

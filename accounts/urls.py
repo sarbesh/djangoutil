@@ -12,5 +12,6 @@ router.register(r'groups', views.GroupViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('api-token-auth', views.obtain_expiring_auth_token),
+    path('api-token-logout', views.Logout.as_view()),
     path('api-auth', include('rest_framework.urls', namespace='rest_framework'))
 ]

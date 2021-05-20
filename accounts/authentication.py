@@ -5,6 +5,9 @@ from django.utils.timezone import make_aware
 import pytz
 from rest_framework import exceptions
 from rest_framework.authentication import TokenAuthentication
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class BearerAuthentication(TokenAuthentication):
@@ -21,16 +24,19 @@ class BearerAuthentication(TokenAuthentication):
         try:
             token = model.objects.select_related('user').get(key=key)
         except model.DoesNotExist:
+            logger.error("#Auth error for key: {}".format(key))
             raise exceptions.AuthenticationFailed('Invalid token.')
 
         if not token.user.is_active:
+            logger.error("#Auth error for user: {}, user inactive or deleted".format(token.user))
             raise exceptions.AuthenticationFailed('User inactive or deleted.')
 
         # This is required for the time comparison
         now = datetime.now()
         now = now.replace(tzinfo=pytz.timezone(settings.TIME_ZONE))
-
-        if token.created < make_aware(now.now() - timedelta(days=60)):
+        valid = make_aware(now.now() - timedelta(days=60))
+        if token.created < valid:
+            logger.debug("#Auth error user: {} Token Expired : {}".format(token.user, token.created-valid))
             raise exceptions.AuthenticationFailed('Token has expired')
 
         return token.user, token

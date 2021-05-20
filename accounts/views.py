@@ -1,3 +1,6 @@
+import datetime
+from django.conf import settings
+from django.utils.timezone import make_aware
 from django.shortcuts import render
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -7,7 +10,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework import permissions
 
 from .authentication import BearerAuthentication
@@ -44,16 +47,24 @@ class AuthView(APIView):
         return Response(content)
 
 
-class CustomAuthToken(ObtainAuthToken):
+class ObtainExpiringAuthToken(ObtainAuthToken):
+    def post(self, request, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            token, created = Token.objects.get_or_create(user=user)
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user_id': user.pk,
-            'email': user.email
-        })
+            if not created:
+                # update the created time of the token to keep it valid
+                token.created = make_aware(datetime.datetime.now())
+                token.save()
+
+            return Response({
+                'token': token.key,
+                'user_id': user.pk,
+                'email': user.email
+            })
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+obtain_expiring_auth_token = ObtainExpiringAuthToken.as_view()

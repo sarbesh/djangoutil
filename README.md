@@ -73,7 +73,7 @@ Detailed instructions on how to install, configure, and get the project running.
 ## Usage
 
 ```
-    python manage.py runserver
+    python manage.py runserver --settings=djangoutil.settings.dev
 ```
 
 ## How to test the software
@@ -82,7 +82,6 @@ Detailed instructions on how to install, configure, and get the project running.
 
 ## Known issues
 
-[comment]: <> (Document any known significant shortcomings with the software.)
 
 ## Getting help
 

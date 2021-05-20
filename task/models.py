@@ -22,7 +22,7 @@ class Task(models.Model):
     owner = models.ForeignKey('auth.User', related_name='snippets', on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ('-created',)
+        ordering = ('-created', '-updated')
 
     def __str__(self):
-        return "{}".format(self.name)
+        return "name : {}, status : {} , owner : {}".format(self.name, self.status, self.owner)

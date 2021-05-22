@@ -26,6 +26,7 @@ class UserViewSet(viewsets.ModelViewSet):
     API endpoint that allows users to be viewed or edited.
     """
     queryset = User.objects.all().order_by('-date_joined')
+    logger.debug("UserViewSet queryset : {}".format(queryset))
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -35,6 +36,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     API endpoint that allows groups to be viewed or edited.
     """
     queryset = Group.objects.all()
+    logger.debug("GroupViewSet queryset : {}".format(queryset))
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -79,6 +81,5 @@ obtain_expiring_auth_token = ObtainExpiringAuthToken.as_view()
 class Logout(APIView):
     def get(self, request, format=None):
         # simply delete the token to force a login
-        logger.info("#Logout {}".format(request.user.username))
         request.user.auth_token.delete()
         return Response(status=status.HTTP_200_OK)

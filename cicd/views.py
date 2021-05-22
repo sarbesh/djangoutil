@@ -11,6 +11,7 @@ import os
 
 from django.views.decorators.http import require_POST
 from rest_framework import status
+from rest_framework.utils import json
 
 logger = logging.getLogger(__name__)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,18 +26,31 @@ def update(request):
                 pass the path of the diectory where your project will be 
                 stored on PythonAnywhere in the git.Repo() as parameter.
                 '''
-        logger.debug("#CICD path : {}".format(BASE_DIR))
-        repo = git.Repo(BASE_DIR)
-        origin = repo.remotes.origin
+        request_payload = json.loads(request.body)
+        logger.debug("#CICD Request body : {}".format(request_payload))
+        if request_payload["action"] == "closed":
+            pull_request = request_payload["pull_request"]
+            if pull_request["merged"]:
+                logger.debug("#CICD path : {}".format(BASE_DIR))
+                repo = git.Repo(BASE_DIR)
+                origin = repo.remotes.origin
 
-        logger.info("#CICD updating project")
-        origin.pull()
-        logger.info("#CICD project updated successfully")
+                logger.info("#CICD updating project")
+                origin.pull()
+                logger.info("#CICD project updated successfully")
 
-        update_requirements()
+                update_requirements()
 
-        return HttpResponse("Updated code on PythonAnywhere",
-                            status=status.HTTP_200_OK)
+                return HttpResponse("Updated code on PythonAnywhere",
+                                    status=status.HTTP_200_OK)
+            else:
+                logger.info("Received hook for closed with unmerged commits Pull request: {} ".format(pull_request))
+                return HttpResponse("PR closed with unmerged commits webhook received on PythonAnywhere",
+                                    status=status.HTTP_200_OK)
+        else:
+            logger.info("Received hook for not closed Pull request: {} ".format(request_payload))
+            return HttpResponse("PR not closed webhook received on PythonAnywhere",
+                                status=status.HTTP_200_OK)
 
     except ConnectionError as ex:
         logger.error("#CICD update connection error : {}".format(str(ex)))
@@ -63,5 +77,6 @@ def update(request):
 def update_requirements():
     env = os.getenv("VIRTUAL_ENV")
     logger.info("#CICD updating {} requirements".format(env))
-    Popen(shlex.split('/bin/bash -c "source {}/bin/activate && pip install -r {}/requirements.txt"'.format(env, BASE_DIR)))
+    Popen(shlex.split(
+        '/bin/bash -c "source {}/bin/activate && pip install -r {}/requirements.txt"'.format(env, BASE_DIR)))
     logger.info("#CICD requirements updated for {}".format(env))

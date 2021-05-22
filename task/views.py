@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 class TaskList(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated, IsOwner]
     queryset = Task.objects.all()
-    logger.debug("#TaskList query:{}".format(queryset))
     serializer_class = TaskSerializer
 
     def perform_create(self, serializer):
@@ -26,17 +25,14 @@ class TaskList(generics.CreateAPIView):
 class TaskDetails(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwner]
     queryset = Task.objects.all()
-    logger.debug("#TaskDetails query:{}".format(queryset))
     serializer_class = TaskSerializer
 
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
-    logger.debug("#UserList query:{}".format(queryset))
     serializer_class = UserTaskSerializer
 
 
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
-    logger.debug("#UserDetail query:{}".format(queryset))
     serializer_class = UserTaskSerializer

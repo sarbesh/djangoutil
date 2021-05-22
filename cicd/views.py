@@ -7,11 +7,14 @@ import logging
 from pathlib import Path
 import os
 
+from django.views.decorators.http import require_POST
+
 logger = logging.getLogger(__name__)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 @csrf_exempt
+@require_POST
 def update(request):
     logger.info("#CICD received {},request : {} with headers: {}".format(request.method, request.body, request.headers))
     if request.method == "POST":
@@ -29,9 +32,7 @@ def update(request):
             origin.pull()
             logger.info("#CICD project updated successfully")
 
-            logger.info("#CICD updating requirements")
-            os.system(f"pip install -r {BASE_DIR}/requirements.txt")
-            logger.info("#CICD requirements updated")
+            update_requirements()
 
             return HttpResponse("Updated code on PythonAnywhere")
 
@@ -52,3 +53,10 @@ def update(request):
             return HttpResponse("Exception occured while updating code on PythonAnyWhere")
     else:
         return HttpResponse("Couldn't update the code on PythonAnywhere")
+
+
+def update_requirements():
+    env = os.getenv('VIRTUAL_ENV')
+    logger.info("#CICD updating {} requirements".format(env))
+    os.system(f"source {env}/bin/activate && pip install -r {BASE_DIR}/requirements.txt")
+    logger.info("#CICD requirements updated for {}".format(env))

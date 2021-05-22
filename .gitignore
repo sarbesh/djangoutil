@@ -77,3 +77,4 @@ src/vendor/
 dist/
 db.sqlite3
 */migrations/
+prod_db.sqlite3

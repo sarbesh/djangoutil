@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     # custom apps
     'accounts',
     'notifier',
-    'task'
+    'task',
+    'cicd'
 
 ]
 

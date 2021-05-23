@@ -23,7 +23,7 @@ def update(request):
     logger.info("#CICD received {},request : {} with headers: {}".format(request.method, request.body, request.headers))
     try:
         '''
-                pass the path of the diectory where your project will be 
+                pass the path of the directory where your project will be 
                 stored on PythonAnywhere in the git.Repo() as parameter.
                 '''
         request_payload = json.loads(request.body)

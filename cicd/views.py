@@ -23,7 +23,7 @@ def update(request):
     logger.info("#CICD received {},request : {} with headers: {}".format(request.method, request.body, request.headers))
     try:
         '''
-                pass the path of the diectory where your project will be 
+                pass the path of the directory where your project will be 
                 stored on PythonAnywhere in the git.Repo() as parameter.
                 '''
         request_payload = json.loads(request.body)
@@ -79,5 +79,5 @@ def update_requirements():
     logger.info("#CICD updating {} requirements".format(env))
     Popen(shlex.split(
         '/bin/bash -c "source {}/bin/activate && pip install -r {}/requirements.txt && python {}/manage.py '
-        'collectstatic -y && python {}/manage.py migrate -y "'.format(env, BASE_DIR, BASE_DIR, BASE_DIR)))
+        'collectstatic --noinput && python {}/manage.py migrate --noinput "'.format(env, BASE_DIR, BASE_DIR, BASE_DIR)))
     logger.info("#CICD requirements updated for {}".format(env))

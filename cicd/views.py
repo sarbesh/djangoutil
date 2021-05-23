@@ -70,7 +70,7 @@ def update(request):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     except Exception as ex:
         logger.error("#CICD global exception : {}".format(str(ex)))
-        return HttpResponse("Exception occured while updating code on PythonAnyWhere",
+        return HttpResponse("Exception occurred while updating code on PythonAnyWhere",
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -78,5 +78,6 @@ def update_requirements():
     env = os.getenv("VIRTUAL_ENV")
     logger.info("#CICD updating {} requirements".format(env))
     Popen(shlex.split(
-        '/bin/bash -c "source {}/bin/activate && pip install -r {}/requirements.txt"'.format(env, BASE_DIR)))
+        '/bin/bash -c "source {}/bin/activate && pip install -r {}/requirements.txt && python {}/manage.py '
+        'collectstatic -y && python {}/manage.py migrate -y "'.format(env, BASE_DIR, BASE_DIR, BASE_DIR)))
     logger.info("#CICD requirements updated for {}".format(env))

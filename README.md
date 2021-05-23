@@ -1,35 +1,3 @@
-[comment]: <> (#### CFPB Open Source Project Template Instructions)
-
-[comment]: <> (1. Create a new project.)
-
-[comment]: <> (2. [Copy these files into the new project]&#40;#installation&#41;)
-
-[comment]: <> (3. Update the README, replacing the contents below as prescribed.)
-
-[comment]: <> (4. Add any libraries, assets, or hard dependencies whose source code will be included)
-
-[comment]: <> (   in the project's repository to the _Exceptions_ section in the [TERMS]&#40;TERMS.md&#41;.)
-
-[comment]: <> (  - If no exceptions are needed, remove that section from TERMS.)
-
-[comment]: <> (5. If working with an existing code base, answer the questions on the [open source checklist]&#40;opensource-checklist.md&#41;)
-
-[comment]: <> (6. Delete these instructions and everything up to the _Project Title_ from the README.)
-
-[comment]: <> (7. Write some great software and tell people about it.)
-
-[comment]: <> (> Keep the README fresh! It's the first thing people see and will make the initial impression.)
-
-[comment]: <> (## Installation)
-
-[comment]: <> (To install all of the template files, run the following script from the root of your project's directory:)
-
-[comment]: <> (```)
-
-[comment]: <> (bash -c "$&#40;curl -s https://raw.githubusercontent.com/CFPB/development/master/open-source-template.sh&#41;")
-
-[comment]: <> (```)
-
 ----
 
 # Project Title
@@ -42,7 +10,7 @@ in the service or request received. This would save time for regular checking on
 
 Other things to include:
 
-  - **Technology stack**: Python3, Django, REST
+  - **Technology stack**: Python3, Django, REST, JWT, GitPython
   - **Status**:  1.0 . This is also a good place to link to the [CHANGELOG](CHANGELOG.md).
 
   - **Links to production or demo instances**
@@ -58,7 +26,11 @@ Other things to include:
 ## Dependencies
 
     - Python 3.9
-    - Django 3.2.3
+    - Django 3.2
+    - djangorestframework 3.12
+    - djangorestframework-simplejwt 4.6
+    - GitPython 3.1
+    - dotenv 0.17
 
 
 ## Installation
@@ -73,7 +45,7 @@ Detailed instructions on how to install, configure, and get the project running.
 ## Usage
 
 ```
-    python manage.py runserver --settings=djangoutil.settings.dev
+    python manage.py runserver
 ```
 
 ## How to test the software

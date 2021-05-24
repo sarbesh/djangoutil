@@ -79,5 +79,6 @@ def update_requirements():
     logger.info("#CICD updating {} requirements".format(env))
     Popen(shlex.split(
         '/bin/bash -c "source {}/bin/activate && pip install -r {}/requirements.txt && python {}/manage.py '
-        'collectstatic --noinput && python {}/manage.py migrate --noinput "'.format(env, BASE_DIR, BASE_DIR, BASE_DIR)))
+        'collectstatic --noinput && python {}/manage.py makemigrations --noinput && python {}/manage.py migrate '
+        '--noinput "'.format(env, BASE_DIR, BASE_DIR, BASE_DIR, BASE_DIR)))
     logger.info("#CICD requirements updated for {}".format(env))

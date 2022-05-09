@@ -78,3 +78,7 @@ dist/
 db.sqlite3
 prod_db.sqlite3
 /djangoutil/static/
+
+# IDE #
+#############
+.idea
